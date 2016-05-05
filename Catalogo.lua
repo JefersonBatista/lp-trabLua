@@ -6,23 +6,23 @@
 dofile("Livro.lua")
 
 -- Métodos
-local Catalogo_methods {
-	function Print(self)
+local Catalogo_methods = {
+	Print = function(self)
 		catalogo = self.livros
 		for i = 1, #catalogo do
 			catalogo[i]:Print()
 		end
 	end,
 	
-	function add(self, livro)
+	add = function(self, livro)
 		catalogo = self.livros
 		table.insert(catalogo, livro)
 	end,
 	
 	-- Função principal de ordenação
-	function sort(self, comparator)
+	sort = function(self, comparador)
 		catalogo = self.livros
-		quicksort(catalogo, comparator)
+		quicksort(catalogo, 1, #catalogo, comparador)
 	end
 }
 
@@ -32,7 +32,7 @@ local Catalogo_metatable = {
 }
 
 -- Construtor
-function Catalogo()
+Catalogo = function()
 	self = {}
 	self.livros = {}
 	setmetatable(self, Catalogo_metatable)
@@ -40,37 +40,35 @@ function Catalogo()
 end
 
 -- Função auxiliar de ordenação
-function quicksort(lista, comparator)
-	if lista == {} then
+function quicksort(lista, inic, fim, comparador)
+	-- Critério de parada
+	if not (inic < fim) then
 		return
 	end
-		
-	n = #lista
-	pivo = lista[1]
-	menores = {}
-	maiores = {}
 	
-	for i = 2, n do
-		if comparator(pivo, lista[i]) then
-			table.insert(menores, lista[i])
-		else
-			table.insert(maiores, lista[i])
+	-- Partição
+	pivo = lista[inic]
+	p = inic
+	
+	for i = inic+1, fim do
+		if comparador(pivo, lista[i]) then
+			lista[p] = lista[i];
+			lista[i] = lista[p+1];
+			lista[p+1] = pivo;
+			p = p+1;
 		end
 	end
 	
-	quicksort(menores, comparator)
-	table.insert(menores, pivo)
-	quicksort(maiores, comparator)
-	lista = concatenar(menores, maiores)
+	-- Chamada recursiva
+	quicksort(lista, inic, p-1, comparador)
+	quicksort(lista, p+1, fim, comparador)
 end
 
 -- Função de concatenação de listas
-function concatenar(lista, outra)
-	n = #outra
-	for i = 1, n do
+concatenar = function(lista, outra)
+	for i = 1, #outra do
 		table.insert(lista, outra[i])
 	end
-	return lista
 end
 
 

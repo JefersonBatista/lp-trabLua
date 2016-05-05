@@ -9,6 +9,7 @@ local Livro_methods = {
 		print("Código: " .. self.codigo)
 		print("Título: " .. self.titulo)
 		print("Autor: " .. self.autor)
+		print()
 	end
 }
 
@@ -18,7 +19,7 @@ local Livro_metatable = {
 }
 
 -- Construtor
-function Livro(codigo, titulo, autor)
+Livro = function(codigo, titulo, autor)
 	self = {}
 	self.codigo = codigo
 	self.titulo = titulo
@@ -32,7 +33,7 @@ cmpCodigoCresc = function(livro, outro)
 end
 
 cmpCodigoDecresc = function(livro, outro)
-	return not cmpCodigoCresc
+	return not cmpCodigoCresc(livro, outro)
 end
 
 cmpTitulo = function(livro, outro)
@@ -45,7 +46,7 @@ cmpTitulo = function(livro, outro)
 			return cmpCodigoDecresc(livro, outro)
 		end
 	end
-end,
+end
 
 cmpAutor = function(livro, outro)
 	if livro.autor > outro.autor then
