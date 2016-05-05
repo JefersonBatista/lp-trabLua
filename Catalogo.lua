@@ -52,10 +52,10 @@ function quicksort(lista, inic, fim, comparador)
 	
 	for i = inic+1, fim do
 		if comparador(pivo, lista[i]) then
-			lista[p] = lista[i];
-			lista[i] = lista[p+1];
-			lista[p+1] = pivo;
-			p = p+1;
+			lista[p] = lista[i]
+			lista[i] = lista[p+1]
+			lista[p+1] = pivo
+			p = p+1
 		end
 	end
 	
