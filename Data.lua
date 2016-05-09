@@ -25,4 +25,22 @@ Data = function(dataStr) {
 	return self
 }
 
--- Fazer o comparador
+comparaData = function(data, outra)
+	if data.ano > outra.ano
+		return 1
+	elseif data.ano < outra.ano
+		return -1
+	elseif data.mes > outra.mes
+		return 1
+	elseif data.mes < outra.mes
+		return -1
+	elseif data.dia > outra.dia
+		return 1
+	elseif data.dia < outra.dia
+		return -1
+	else
+		return 0
+	end
+end
+
+
