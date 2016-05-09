@@ -1,11 +1,28 @@
 dofile("Catalogo.lua")
 
-livro1 = Livro(144, "Como programar em Lua", "Jeferson Batista")
-livro2 = Livro(233, "O Senhor dos Anéis", "J. R. R. Tolkien")
-livro3 = Livro(150, "E o vento levou", "Desconhecido")
-livro4 = Livro(250, "ChuHaskell", "Jeferson Batista")
-livro5 = Livro(458, "Como programar em Lua", "Flávio Varejão")
-livro6 = Livro(222, "Vivendo Perigosamente", "Jeferson Batista")
+livro1 = Livro(144)
+livro1:setTitulo("Como programar em Lua")
+livro1:setAutor("Jeferson Batista")
+
+livro2 = Livro(233)
+livro2:setTitulo("O Senhor dos Anéis")
+livro2:setAutor("J. R. R. Tolkien")
+
+livro3 = Livro(150)
+livro3:setTitulo("E o vento levou")
+livro3:setAutor("Desconhecido")
+
+livro4 = Livro(250)
+livro4:setTitulo("ChuHaskell")
+livro4:setAutor( "Jeferson Batista")
+
+livro5 = Livro(458)
+livro5:setTitulo("Como programar em Lua")
+livro5:setAutor("Flávio Varejão")
+
+livro6 = Livro(222)
+livro6:setTitulo("Vivendo Perigosamente")
+livro6:setAutor("Jeferson Batista")
 
 bib = Catalogo()
 bib:add(livro1)

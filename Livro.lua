@@ -10,6 +10,14 @@ local Livro_methods = {
 		print("Título: " .. self.titulo)
 		print("Autor: " .. self.autor)
 		print()
+	end,
+	
+	setTitulo = function(self, titulo)
+		self.titulo = titulo
+	end,
+	
+	setAutor = function(self, autor)
+		self.autor = autor
 	end
 }
 
@@ -19,11 +27,9 @@ local Livro_metatable = {
 }
 
 -- Construtor
-Livro = function(codigo, titulo, autor)
+Livro = function(codigo)
 	self = {}
 	self.codigo = codigo
-	self.titulo = titulo
-	self.autor = autor
 	setmetatable(self, Livro_metatable)
 	return self
 end
