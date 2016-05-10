@@ -7,11 +7,55 @@ dofile("Livro.lua")
 
 -- Métodos
 local Catalogo_methods = {
-	Print = function(self)
+	ler = function(self)
+		arquivo = io.open("catalogo.txt", "r")
+		linha = arquivo:read()
+		
+		while linha ~= nil do
+			codigo = tonumber(linha) or 0
+			titulo = arquivo:read()
+			autor = arquivo:read()
+			assunto = arquivo:read()
+			strData = arquivo:read()
+			data = Data(strData)
+			editora = arquivo:read()
+			
+			-- Montando o resumo
+			resumo = ""
+			linha = arquivo:read()
+			while linha ~= "" and linha ~= nil do
+				resumo = resumo .. linha
+				linha = arquivo:read()
+			end
+			
+			while linha == "" do
+				linha = arquivo:read()
+			end
+		end
+		
+		livro = Livro(codigo)
+		livro:setTitulo(titulo)
+		livro:setAutor(autor)
+		livro:setAssunto(assunto)
+		livro:setData(data)
+		livro:setEditora(editora)
+		livro:setResumo(resumo)
+		self:add(livro)
+		
+		io.close(arquivo)
+	end, 
+	
+	registrar = function(self)
+		registro = ""
 		catalogo = self.livros
 		for i = 1, #catalogo do
-			catalogo[i]:Print()
+			print(i)
+			-- print(catalogo[i]:strLivro())
+			registro = registro .. catalogo[i]:strLivro()
 		end
+		-- print(registro)
+		
+		return registro
 	end,
 	
 	add = function(self, livro)
@@ -63,12 +107,4 @@ function quicksort(lista, inic, fim, comparador)
 	quicksort(lista, inic, p-1, comparador)
 	quicksort(lista, p+1, fim, comparador)
 end
-
--- Função de concatenação de listas
-concatenar = function(lista, outra)
-	for i = 1, #outra do
-		table.insert(lista, outra[i])
-	end
-end
-
 

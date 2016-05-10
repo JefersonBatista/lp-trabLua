@@ -3,13 +3,20 @@
 -- Autor: Jeferson Batista
 -------------------------------------------------------
 
+dofile("Data.lua")
+
 -- Métodos
 local Livro_methods = {
-	Print = function(self)
-		print("Código: " .. self.codigo)
-		print("Título: " .. self.titulo)
-		print("Autor: " .. self.autor)
-		print()
+	strLivro = function(self)
+		string = ""
+		string = string .. self.codigo .. "\n"
+		string = string .. self.titulo .. "\n"
+		string = string .. self.autor .. "\n"
+		string = string .. self.assunto .. "\n"
+		string = string .. self.data:strData() .. "\n"
+		string = string .. self.editora .. "\n"
+		string = string .. self.resumo .. "\n\n"
+		return string
 	end,
 	
 	setTitulo = function(self, titulo)
@@ -18,6 +25,22 @@ local Livro_methods = {
 	
 	setAutor = function(self, autor)
 		self.autor = autor
+	end,
+	
+	setAssunto = function(self, assunto)
+		self.assunto = assunto
+	end,
+	
+	setData = function(self, data)
+		self.data = data
+	end,
+	
+	setEditora = function(self, editora)
+		self.editora = editora
+	end,
+	
+	setResumo = function(self, resumo)
+		self.resumo = resumo
 	end
 }
 
@@ -43,10 +66,13 @@ cmpCodigoDecresc = function(livro, outro)
 end
 
 cmpTitulo = function(livro, outro)
-	if livro.titulo < outro.titulo then
+	t1 = string.lower(livro.titulo)
+	t2 = string.lower(outro.titulo)
+
+	if t1 < t2 then
 		return true
 	else 
-		if livro.titulo > outro.titulo then
+		if t1 > t2 then
 			return false
 		else
 			return cmpCodigoDecresc(livro, outro)
@@ -55,14 +81,28 @@ cmpTitulo = function(livro, outro)
 end
 
 cmpAutor = function(livro, outro)
-	if livro.autor > outro.autor then
+	a1 = string.lower(livro.autor)
+	a2 = string.lower(outro.autor)
+
+	if a1 < a2 then
 		return true
 	else 
-		if livro.autor < outro.autor then
+		if a1 > a2 then
 			return false
 		else
 			return cmpCodigoCresc(livro, outro)
 		end
+	end
+end
+
+cmpData = function(livro, outro)
+	cmp = comparaData(livro.data, outro.data)
+	if cmp == 1 then
+		return false
+	elseif cmp == -1 then
+		return true
+	else
+		return cmpCodigoDecresc(livro, outro)
 	end
 end
 

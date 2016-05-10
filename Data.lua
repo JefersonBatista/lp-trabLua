@@ -6,7 +6,9 @@
 -- Métodos
 local Data_methods = {
 	strData = function(self)
-		return '%.2d/%.2d/%d\n' % (self.dia, self.mes, self.ano)
+		str = ""
+		str = str .. self.dia .. "/" .. self.mes .. "/" .. self.ano
+		return str
 	end
 }
 
@@ -16,27 +18,27 @@ local Data_metatable = {
 }
 
 -- Construtor
-Data = function(dataStr) {
+Data = function(dataStr)
 	self = {}
 	self.dia = tonumber(string.sub(dataStr, 1,2))
 	self.mes = tonumber(string.sub(dataStr, 4,5))
 	self.ano = tonumber(string.sub(dataStr, 7, 10))
 	setmetatable(self, Data_metatable)
 	return self
-}
+end
 
 comparaData = function(data, outra)
-	if data.ano > outra.ano
+	if data.ano > outra.ano then
 		return 1
-	elseif data.ano < outra.ano
+	elseif data.ano < outra.ano then
 		return -1
-	elseif data.mes > outra.mes
+	elseif data.mes > outra.mes then
 		return 1
-	elseif data.mes < outra.mes
+	elseif data.mes < outra.mes then
 		return -1
-	elseif data.dia > outra.dia
+	elseif data.dia > outra.dia then
 		return 1
-	elseif data.dia < outra.dia
+	elseif data.dia < outra.dia then
 		return -1
 	else
 		return 0
