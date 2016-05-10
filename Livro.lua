@@ -19,6 +19,16 @@ local Livro_methods = {
 		return string
 	end,
 	
+	escrever = function(self)
+		io.write(self.codigo, "\n")
+		io.write(self.titulo, "\n")
+		io.write(self.autor, "\n")
+		io.write(self.assunto, "\n")
+		self.data:escrever()
+		io.write(self.editora, "\n")
+		io.write(self.resumo, "\n\n")
+	end,
+	
 	setTitulo = function(self, titulo)
 		self.titulo = titulo
 	end,
@@ -50,9 +60,15 @@ local Livro_metatable = {
 }
 
 -- Construtor
-Livro = function(codigo)
+Livro = function(codigo, titulo, autor, assunto, data, editora, resumo)
 	self = {}
 	self.codigo = codigo
+	self.titulo = titulo
+	self.autor = autor
+	self.assunto = assunto
+	self.data = data
+	self.editora = editora
+	self.resumo = resumo
 	setmetatable(self, Livro_metatable)
 	return self
 end
@@ -84,10 +100,10 @@ cmpAutor = function(livro, outro)
 	a1 = string.lower(livro.autor)
 	a2 = string.lower(outro.autor)
 
-	if a1 < a2 then
+	if a1 > a2 then
 		return true
 	else 
-		if a1 > a2 then
+		if a1 < a2 then
 			return false
 		else
 			return cmpCodigoCresc(livro, outro)

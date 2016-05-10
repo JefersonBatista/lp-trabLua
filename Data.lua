@@ -9,6 +9,10 @@ local Data_methods = {
 		str = ""
 		str = str .. self.dia .. "/" .. self.mes .. "/" .. self.ano
 		return str
+	end,
+	
+	escrever = function(self)
+		io.write(string.format("%.2d/%.2d/%d\n", self.dia, self.mes, self.ano))
 	end
 }
 
@@ -20,9 +24,9 @@ local Data_metatable = {
 -- Construtor
 Data = function(dataStr)
 	self = {}
-	self.dia = tonumber(string.sub(dataStr, 1,2))
-	self.mes = tonumber(string.sub(dataStr, 4,5))
-	self.ano = tonumber(string.sub(dataStr, 7, 10))
+	self.dia = tonumber(string.sub(dataStr, 1, 2)) or 0
+	self.mes = tonumber(string.sub(dataStr, 4, 5)) or 0
+	self.ano = tonumber(string.sub(dataStr, 7, 10)) or 0
 	setmetatable(self, Data_metatable)
 	return self
 end

@@ -9,53 +9,65 @@ dofile("Livro.lua")
 local Catalogo_methods = {
 	ler = function(self)
 		arquivo = io.open("catalogo.txt", "r")
-		linha = arquivo:read()
+		io.input(arquivo)
+	
+		local linhas = {}
 		
-		while linha ~= nil do
-			codigo = tonumber(linha) or 0
-			titulo = arquivo:read()
-			autor = arquivo:read()
-			assunto = arquivo:read()
-			strData = arquivo:read()
-			data = Data(strData)
-			editora = arquivo:read()
-			
-			-- Montando o resumo
-			resumo = ""
-			linha = arquivo:read()
-			while linha ~= "" and linha ~= nil do
-				resumo = resumo .. linha
-				linha = arquivo:read()
-			end
-			
-			while linha == "" do
-				linha = arquivo:read()
-			end
+		-- Lendo todo o catálogo linha por linha
+		for linha in io.lines() do
+			table.insert(linhas, linha)
 		end
 		
-		livro = Livro(codigo)
-		livro:setTitulo(titulo)
-		livro:setAutor(autor)
-		livro:setAssunto(assunto)
-		livro:setData(data)
-		livro:setEditora(editora)
-		livro:setResumo(resumo)
-		self:add(livro)
+		num = #linhas
+		i = 1
+		
+		while i <= num do            -- Até ler todas as linhas do arquivo
+			codigo = tonumber(linhas[i]) or 0
+			titulo = linhas[i+1]
+			autor = linhas[i+2]
+			assunto = linhas[i+3]
+			
+			strData = linhas[i+4]
+			data = Data(strData)
+			
+			editora = linhas[i+5]
+			
+			-- Indo para a primeira linha do resumo
+			i = i + 6
+			resumo = ""
+			while linhas[i] ~= "" do     -- Enquanto o resumo não terminar
+				resumo = resumo .. linhas[i] .. "\n"
+				i = i + 1
+				if i > num then          -- Se o arquivo terminar, pare
+					break
+				end
+			end
+			
+			livro = Livro(codigo, titulo, autor, assunto, data, editora, resumo)
+			self:add(livro)
+			
+			-- Indo para o próximo livro
+			i = i + 1
+		end
 		
 		io.close(arquivo)
-	end, 
+	end,
 	
 	registrar = function(self)
 		registro = ""
 		catalogo = self.livros
 		for i = 1, #catalogo do
-			print(i)
-			-- print(catalogo[i]:strLivro())
 			registro = registro .. catalogo[i]:strLivro()
 		end
-		-- print(registro)
 		
 		return registro
+	end,
+	
+	escrever = function(self)
+		catalogo = self.livros
+		for i = 1, #catalogo do
+			catalogo[i]:escrever()
+		end
 	end,
 	
 	add = function(self, livro)
