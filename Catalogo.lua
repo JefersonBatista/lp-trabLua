@@ -44,7 +44,7 @@ local Catalogo_methods = {
 			end
 			
 			livro = Livro(codigo, titulo, autor, assunto, data, editora, resumo)
-			self:add(livro)
+			self:adicionar(livro)
 			
 			-- Indo para o próximo livro
 			i = i + 1
@@ -53,14 +53,129 @@ local Catalogo_methods = {
 		io.close(arquivo)
 	end,
 	
-	registrar = function(self)
-		registro = ""
+	buscarLivro = function(self)
 		catalogo = self.livros
-		for i = 1, #catalogo do
-			registro = registro .. catalogo[i]:strLivro()
+		n = #catalogo
+		
+		-- Busca linear pelo código
+		for i = 1, n do
+			if catalogo[i]:getCodigo() == codigo then
+				return i
+			end
 		end
 		
-		return registro
+		-- Caso o livro não seja encontrado
+		return n + 1
+	end,
+	
+	-- Função que atualiza o catálogo
+	atualizar = function(self)
+		catalogo = self.livros
+		n = #catalogo
+	
+		arquivo = io.open("atual.txt", "r")
+		io.input(arquivo)
+	
+		local linhas = {}
+		
+		-- Lendo todo o catálogo linha por linha
+		for linha in io.lines() do
+			table.insert(linhas, linha)
+		end
+		
+		num = #linhas
+		i = 1
+		
+		while i < num do            -- Até ler todas as linhas do arquivo
+			acao = linhas[i]
+			
+			-- Caso de exclusão
+			if acao == "e" then
+				codigo = tonumber(linhas[i+1]) or 0
+				indice = self:buscarLivro(codigo)
+				
+				if indice > n then
+					print("Livro a ser excluído não encontrado! Nada feito.\n")
+				else
+					table.remove(catalogo, indice)
+				end
+				
+				-- Indo para o fim da ação de exclusão
+				i = i + 2
+			end
+			
+			-- Caso de inclusão
+			if acao == "i" then
+				-- Indo para as informações do livro
+				i = i + 1
+				
+				codigo = tonumber(linhas[i]) or 0
+				titulo = linhas[i+1]
+				autor = linhas[i+2]
+				assunto = linhas[i+3]
+			
+				strData = linhas[i+4]
+				data = Data(strData)
+			
+				editora = linhas[i+5]
+			
+				-- Indo para a primeira linha do resumo
+				i = i + 6
+				resumo = ""
+				while linhas[i] ~= "" do       -- Enquanto o resumo não terminar
+					resumo = resumo .. linhas[i] .. "\n"
+					i = i + 1
+					if i > num then            -- Se o arquivo terminar, pare
+						break
+					end
+				end
+			
+				livro = Livro(codigo, titulo, autor, assunto, data, editora, resumo)
+				self:adicionar(livro)
+			end
+			
+			-- Caso de alteração
+			if acao == "a" then
+				-- Indo para as informações do livro
+				i = i + 1
+			
+				codigo = tonumber(linhas[i]) or 0
+				indice = self:buscarLivro(codigo)
+				livro = catalogo[indice]
+				
+				titulo = linhas[i+1]
+				autor = linhas[i+2]
+				assunto = linhas[i+3]
+			
+				strData = linhas[i+4]
+				data = Data(strData)
+			
+				editora = linhas[i+5]
+			
+				-- Indo para a primeira linha do resumo
+				i = i + 6
+				resumo = ""
+				while linhas[i] ~= "" do       -- Enquanto o resumo não terminar
+					resumo = resumo .. linhas[i] .. "\n"
+					i = i + 1
+					if i > num then              -- Se o arquivo terminar, pare
+						break
+					end
+				end
+			
+				livro:setTitulo(titulo)
+				livro:setAutor(autor)
+				livro:setAssunto(assunto)
+				livro:setData(data)
+				livro:setEditora(editora)
+				livro:setResumo(resumo)
+			end
+			
+			-- Indo para a próxima ação
+			i = i + 1
+		end
+		
+		io.close(arquivo)
 	end,
 	
 	escrever = function(self)
@@ -70,13 +185,13 @@ local Catalogo_methods = {
 		end
 	end,
 	
-	add = function(self, livro)
+	adicionar = function(self, livro)
 		catalogo = self.livros
 		table.insert(catalogo, livro)
 	end,
 	
 	-- Função principal de ordenação
-	sort = function(self, comparador)
+	ordenar = function(self, comparador)
 		catalogo = self.livros
 		quicksort(catalogo, 1, #catalogo, comparador)
 	end

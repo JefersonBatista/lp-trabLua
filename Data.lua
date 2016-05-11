@@ -5,12 +5,6 @@
 
 -- Métodos
 local Data_methods = {
-	strData = function(self)
-		str = ""
-		str = str .. self.dia .. "/" .. self.mes .. "/" .. self.ano
-		return str
-	end,
-	
 	escrever = function(self)
 		io.write(string.format("%.2d/%.2d/%d\n", self.dia, self.mes, self.ano))
 	end

@@ -7,26 +7,34 @@ dofile("Catalogo.lua")
 
 bib = Catalogo()
 bib:ler()
+bib:atualizar()
 
 arquivo = io.open("saida.txt", "w")
 io.output(arquivo)
 
 io.write("Lista de Livros Ordenada Crescentemente por Codigo:\n\n")
-bib:sort(cmpCodigoCresc)
+bib:ordenar(cmpCodigoCresc)
 bib:escrever()
 
 io.write("Lista de Livros Ordenada Decrescentemente por Titulo:\n\n")
-bib:sort(cmpTitulo)
+bib:ordenar(cmpTitulo)
 bib:escrever()
 
 io.write("Lista de Livros Ordenada Crescentemente por Autor:\n\n")
-bib:sort(cmpAutor)
+bib:ordenar(cmpAutor)
 bib:escrever()
 
 io.write("Lista de Livros Ordenada Decrescentemente por Data de Publicacao:\n\n")
-bib:sort(cmpData)
+bib:ordenar(cmpData)
 bib:escrever()
 
 io.close(arquivo)
 
+arquivo = io.open("catalogo.txt", "w")
+io.output(arquivo)
+
+bib:ordenar(cmpCodigoCresc)
+bib:escrever()
+
+io.close(arquivo)
 

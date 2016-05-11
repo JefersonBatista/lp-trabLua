@@ -7,18 +7,6 @@ dofile("Data.lua")
 
 -- Métodos
 local Livro_methods = {
-	strLivro = function(self)
-		string = ""
-		string = string .. self.codigo .. "\n"
-		string = string .. self.titulo .. "\n"
-		string = string .. self.autor .. "\n"
-		string = string .. self.assunto .. "\n"
-		string = string .. self.data:strData() .. "\n"
-		string = string .. self.editora .. "\n"
-		string = string .. self.resumo .. "\n\n"
-		return string
-	end,
-	
 	escrever = function(self)
 		io.write(self.codigo, "\n")
 		io.write(self.titulo, "\n")
@@ -26,7 +14,11 @@ local Livro_methods = {
 		io.write(self.assunto, "\n")
 		self.data:escrever()
 		io.write(self.editora, "\n")
-		io.write(self.resumo, "\n\n")
+		io.write(self.resumo, "\n")
+	end,
+	
+	getCodigo = function(self)
+		return self.codigo
 	end,
 	
 	setTitulo = function(self, titulo)
@@ -87,12 +79,10 @@ cmpTitulo = function(livro, outro)
 
 	if t1 < t2 then
 		return true
-	else 
-		if t1 > t2 then
-			return false
-		else
-			return cmpCodigoDecresc(livro, outro)
-		end
+	elseif t1 > t2 then
+		return false
+	else
+		return cmpCodigoDecresc(livro, outro)
 	end
 end
 
@@ -102,12 +92,10 @@ cmpAutor = function(livro, outro)
 
 	if a1 > a2 then
 		return true
-	else 
-		if a1 < a2 then
-			return false
-		else
-			return cmpCodigoCresc(livro, outro)
-		end
+	elseif a1 < a2 then
+		return false
+	else
+		return cmpCodigoCresc(livro, outro)
 	end
 end
 
